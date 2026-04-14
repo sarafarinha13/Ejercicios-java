@@ -2,9 +2,9 @@ package javaapplication2;
 
 public class Conductor {
     
-     String nombre;
-     boolean carnet;
-     Vehiculo tipoVehiculo;
+    protected String nombre;
+    protected boolean carnet;
+    protected Vehiculo tipoVehiculo;
     
     
     public Conductor(String nombre, boolean carnet, Vehiculo tipoVehiculo){
