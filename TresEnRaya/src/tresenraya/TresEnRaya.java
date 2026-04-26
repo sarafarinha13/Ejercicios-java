@@ -1,5 +1,6 @@
 package tresenraya;
 
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -43,6 +44,49 @@ public class TresEnRaya {
         coordenadas.put(9, new int[]{2,2});
     }
     
+    //Crear un método que me diga si el numero que he elegido ya ha sido usado
+    private static boolean siUsado(int numElegido, int [] usados){
+        for(int i=0; i<usados.length; i++){
+            if(numElegido == usados[i]){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
+    //Victorias
+    private static boolean ganador (String jugador){
+        
+        for(int i=0; i<3; i++){
+            //filas
+            if(tablero[i][0].equals(jugador) && tablero[i][1].equals(jugador)&&tablero[i][2].equals(jugador))
+                return true;
+            
+            
+            //columnas
+            if(tablero[0][i].equals(jugador)&&tablero[1][i].equals(jugador)&&tablero[2][i].equals(jugador))
+                return true;   
+            
+            
+            //diagonal izq-der
+            if(tablero[0][0].equals(jugador)&&tablero[1][1].equals(jugador)&&tablero[2][2].equals(jugador))
+                return true;
+            
+            
+            //diagonal der-izq
+            if(tablero[2][0].equals(jugador)&&tablero[1][1].equals(jugador)&&tablero[0][2].equals(jugador))
+                return true;
+        }    
+     
+                        
+        
+        return false;
+    }    
+        
+
+
+    
     
     
     //crear método para printear el tablero 
@@ -73,13 +117,16 @@ public class TresEnRaya {
         int numElegido = 0;
         int contador = 0;
       
-        int usados [] = {0,0,0,0,0,0,0,0,0};
+        int usados [] = new int [9];
         int [] traducirNumACoordenada;
         Boolean juego = true;
         Boolean turnoX = true;
         
-        traducirCoordenadas();
         Scanner sc = new Scanner(System.in);
+        
+        //Llamar al método traducir coordenadas para que haga la conversión 
+        traducirCoordenadas();
+        
    
         //Inicio del juego 
         System.out.println(TresEnRaya.nombreJuego);
@@ -88,10 +135,10 @@ public class TresEnRaya {
  
        
         while(juego){
-            if(turnoX){
+            if(turnoX && juego){
                
                 //pedir numero a X
-                while(numElegido<1 || numElegido>9 ){
+                while(numElegido<1 || numElegido>9 || siUsado(numElegido, usados)){
                     System.out.println("Dime que posición quieres");
                     numElegido = sc.nextInt();
                 }
@@ -106,15 +153,35 @@ public class TresEnRaya {
                 traducirNumACoordenada = coordenadas.get(numElegido);
                 tablero[traducirNumACoordenada[0]][traducirNumACoordenada[1]] = TresEnRaya.jugador1;
                 
+                
+                //comprobar si es ganador o es empate
+                if(ganador(jugador1)){
+                    System.out.println("""
+                                       
+                                       GANA X!
+                                       
+                                       RESULTADO:""");
+                    juego = false;
+                } else if(contador == 91){
+                    System.out.println("""
+                                       
+                                       Fin del Juego. Ha sido empate
+                                       
+                                       RESULTADO:""");
+                    juego = false;
+                }
+                    
+                        
+                
                 //printear tablero y cambiar de jugador
                 printTablero();
                 turnoX = false;
                 numElegido = 0;
             }
-            if(!turnoX){
+            if(!turnoX && juego){
 
                 //pedir numero a y 
-                while(numElegido<1 || numElegido>9){
+                while(numElegido<1 || numElegido>9 || siUsado(numElegido, usados)){
                     System.out.println("Dime que posición quieres");
                     numElegido = sc.nextInt();
                 }
@@ -126,17 +193,26 @@ public class TresEnRaya {
                 //sustitución
                 traducirNumACoordenada = coordenadas.get (numElegido);
                 tablero[traducirNumACoordenada[0]][traducirNumACoordenada[1]] = TresEnRaya.jugador2;
+                
+                //comprobar si es ganador
+                if(ganador(jugador2)){
+                    System.out.println("""
+                                       
+                                       GANA O!
+                                       
+                                       RESULTADO:""");
+                    juego = false;
+                    
+                }
 
+                
                 printTablero();
                 turnoX = true;
                 numElegido = 0;
-                
-                for(int i=0; i<usados.length; i++){
-                    System.out.println(usados[i]);
-                }
             }
         
         }
     }
     
 }
+
