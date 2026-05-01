@@ -133,7 +133,7 @@ public class TresEnRaya {
                            CONTADOR
                            *********************""");
             System.out.println("VICTORIAS X - " + vX);
-            System.out.println("VICTORIAS Y - " + vO);
+            System.out.println("VICTORIAS O - " + vO);
             System.out.println("EMPATES - " + empate);
 
             System.out.println("""
